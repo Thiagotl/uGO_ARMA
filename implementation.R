@@ -25,4 +25,25 @@ plot(x_values, y_values, type = "l", col = "blue", lwd = 2,
      main = "Unit Gompertz - PDF",
      xlab = "x", ylab = "dUGo(x)")"
 
-cccccc
+
+
+# CUMULATIVE DISTRIBUTION FUNCTION
+
+pUGo<- function(q, alpha = 0.5, theta = 2, lower.tail = TRUE, log.p = FALSE)
+{
+  if (any(alpha <= 0) | any(alpha >= 1)) stop(paste("alpha must be between 0 and 1"))
+  if (any(theta < 0)) stop(paste("theta must be positive"))
+  if (any(q <= 0) | any(q >= 1)) stop(paste("q must be between 0 and 1")) 
+  cdf1 <- exp(alpha*(1-q^(-theta)))
+  if(lower.tail==TRUE) cdf<-cdf1 else cdf<- 1-cdf1
+  if(log.p==FALSE) cdf<- cdf else cdf<- log(cdf)
+  cdf
+  
+}
+
+# check if CDF matches the PDF integration.
+
+#pUGo(.25)
+#integrate(dUGo, 0, .25)
+
+
