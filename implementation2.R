@@ -5,7 +5,7 @@
 dUGo <- function(x, mu=.5, sigma=1, tau=.5, log = FALSE)
 {
   
-  fx1<- log(tau) * sigma * x^(-(1 + sigma)) * exp((log(tau) / (1 - mu^(-sigma))) *
+  fx1<- log(tau)/(1 - mu^(-sigma)) * sigma * x^(-(1 + sigma)) * exp((log(tau) / (1 - mu^(-sigma))) *
                                                    (1 - x^(-sigma)))
   if(log==FALSE) fx<-fx1 else fX<-log(fx1)
   return(fx)
