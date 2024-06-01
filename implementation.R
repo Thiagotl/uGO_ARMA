@@ -13,7 +13,7 @@ dUGo <- function(x, alpha = 0.5, theta = 2, log = FALSE)
 
 }
 
-#Check integration in the range 0 to 1
+#Checking integration in the range 0 to 1
 #integrate(dUGo,0, 1)
 
 # Density Graph
@@ -41,9 +41,39 @@ pUGo<- function(q, alpha = 0.5, theta = 2, lower.tail = TRUE, log.p = FALSE)
   
 }
 
-# check if CDF matches the PDF integration.
+# checking if CDF matches the PDF integration.
 
 #pUGo(.25)
 #integrate(dUGo, 0, .25)
+
+# CDF Graph
+"cdf_values<-pUGo(x_values)
+
+plot(x_values, cdf_values, type = "l", col="blue", lwd = 2,
+     main = "Unit Gompertz - CDF",
+     xlab = "x", ylab = "pUGo(x)")"
+
+
+# quantile function
+qUGo<-function(u, alpha ,theta)
+{
+  q<- (1- (log(u/alpha)))^(-1/theta)
+  q
+}
+
+# checking the qf with the cdf
+u=pUGo(.5)
+qUGo(u, alpha = .7,theta = .1) 
+
+
+"# inversion method for randon generation
+rUW<-function(n,mu,sigma,tau=.5)
+{
+  u<- runif(n)
+  y<- qUW(u,mu =mu, sigma =sigma)
+  y
+}"
+
+
 
 
