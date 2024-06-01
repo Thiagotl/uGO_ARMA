@@ -16,13 +16,13 @@ dUGo <- function(x, alpha = 0.5, theta = 2, log = FALSE)
 #Check integration in the range 0 to 1
 #integrate(dUGo,0, 1)
 
-"# Density Graph
-x_values <- seq(0.001, 0.999, length.out = 1000)
+# Density Graph
+"x_values <- seq(0.001, 0.999, length.out = 1000)
 
 y_values <- dUGo(x_values)
 
 plot(x_values, y_values, type = "l", col = "blue", lwd = 2, 
-     main = "Gráfico da função dUGo",
+     main = "Unit Gompertz - PDF",
      xlab = "x", ylab = "dUGo(x)")"
 
-
+cccccc
