@@ -1,4 +1,3 @@
-# FUNCTION CHECK
 
 # PROBABILITY DENSITY FUNCTION
 
@@ -8,7 +7,7 @@ dUGo <- function(x, alpha = 0.5, theta = 2, log = FALSE)
   if (any(theta<=0)) stop(paste("theta must be posite"))
   if (any(x <= 0) | any(x >= 1)) stop(paste("x must be between 0 and 1"))
   fx1 <- alpha*theta*x^(-1-theta)*exp(alpha*(1-x^-theta)) 
-  if(log==FALSE) fx<-fx1 else fy<-log(fx1)
+  if(log==FALSE) fx<-fx1 else fX<-log(fx1)
   fx
 
 }
@@ -63,16 +62,9 @@ qUGo<-function(u, alpha ,theta)
 
 # checking the qf with the cdf
 u=pUGo(.5)
-qUGo(u, alpha = .7,theta = .1) 
+qUGo(u, alpha = .5,theta = 2) 
 
 
-"# inversion method for randon generation
-rUW<-function(n,mu,sigma,tau=.5)
-{
-  u<- runif(n)
-  y<- qUW(u,mu =mu, sigma =sigma)
-  y
-}"
 
 
 
