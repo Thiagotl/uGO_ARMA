@@ -66,6 +66,6 @@ qUGo(u, alpha = .5,theta = 2)
 
 
 
-
+## teste de coneccao
 
 
