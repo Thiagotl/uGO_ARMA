@@ -57,59 +57,116 @@ sum(llik(z, mu=.5, sigma=1, tau=.5))
 
 
 ### GRAFICOS
+# Carregar pacotes necessários
+library(ggplot2)
+library(dplyr)
+
+# Definição da função dUGo
+dUGo <- function(x, mu = 0.5, sigma = 1.2, tau = 0.5) {
+  log(tau) / (1 - mu^(-sigma)) * sigma * x^(-(1 + sigma)) * exp((log(tau) / (1 - mu^(-sigma))) * (1 - x^(-sigma)))
+}
 
 # Valores dos parâmetros
 sigma_values <- c(0.5, 1.0, 1.5)
 tau <- 0.5
 mu_fixed <- 0.5
 
-# Gerar uma sequência de x para o gráfico
-x <- seq(0.1, 10, length.out = 100)
+# Sequência de valores de x
+x <- seq(0, 5, length.out = 100)
 
-# Configurar a janela gráfica para um único gráfico
-par(mar = c(4, 4, 2, 1))  # Margens: baixo, esquerda, topo, direita
+# Criar data frame para armazenar os valores de x, sigma e densidade
+data <- expand.grid(x = x, sigma = sigma_values)
+data$density <- mapply(dUGo, data$x, mu_fixed, data$sigma, tau)
 
-# Definir tipos de linha diferentes
-line_types <- c(1, 2, 3, 4, 5)  # Tipos de linha: sólido, pontilhado, tracejado, pontilhado e traço longo
+# Plotar as densidades usando ggplot2
+ggplot(data, aes(x = x, y = density, color = factor(sigma), linetype = factor(sigma))) +
+  geom_line(size = 1) +
+  labs(title = paste("Densidade para diferentes valores de sigma com mu =", mu_fixed),
+       x = "x", y = "Density", color = "sigma", linetype = "sigma") +
+  theme_classic() +
+  theme(legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
+        legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+        aspect.ratio = 1) # Tornar a imagem mais quadrada
 
-# Plotar o gráfico com todas as curvas
-plot(x, dUGo(x, mu = mu_fixed, sigma = sigma_values[1], tau = tau), type = "l", lwd = 2,
-     lty = line_types[1], xlab = "x", ylab = "Density",
-     main = paste("Densidade para diferentes valores de sigma com mu =", mu_fixed))
 
-# Adicionar linhas para os outros valores de sigma
-for (i in seq_along(sigma_values)) {
-  lines(x, dUGo(x, mu = mu_fixed, sigma = sigma_values[i], tau = tau), lty = line_types[i], lwd = 2)
+
+
+
+# Carregar pacotes necessários
+library(ggplot2)
+library(dplyr)
+
+# Definição da função dUGo
+dUGo <- function(x, mu = 0.5, sigma = 1.2, tau = 0.5) {
+  log(tau) / (1 - mu^(-sigma)) * sigma * x^(-(1 + sigma)) * exp((log(tau) / (1 - mu^(-sigma))) * (1 - x^(-sigma)))
 }
 
-# Adicionar legenda
-legend("topright", legend = paste("sigma =", sigma_values), lty = line_types, lwd = 2)
+# Valores dos parâmetros
+sigma_values <- c(0.5, 1.0, 1.5,2.0)
+tau <- 0.5
+mu_fixed <- 0.5
+
+# Sequência de valores de x
+x <- seq(0.01, 5, length.out = 100)
+
+# Criar data frame para armazenar os valores de x, sigma e densidade
+data <- expand.grid(x = x, sigma = sigma_values)
+data$density <- mapply(dUGo, data$x, mu_fixed, data$sigma, tau)
+
+# Plotar as densidades usando ggplot2
+ggplot(data, aes(x = x, y = density, color = factor(sigma), linetype = factor(sigma))) +
+  geom_line(size = 1) +
+  labs(title = paste(""), #"Densidade para diferentes valores de sigma com mu =", mu_fixed
+       x = "y", y = "f(y)", color = "sigma", linetype = "sigma") +
+  theme_classic() +
+  theme(
+    legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
+    legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+    axis.line = element_line(), # Adicionar linha do eixo
+    axis.line.x = element_line(), # Adicionar linha do eixo inferior
+    axis.line.y = element_line(), # Adicionar linha do eixo esquerdo
+    axis.line.x.top = element_line(), # Adicionar linha do eixo no topo
+    axis.line.y.right = element_line(), # Adicionar linha do eixo à direita
+    axis.ticks = element_line(), # Adicionar todos os ticks
+    axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
+    axis.ticks.x.top = element_blank(), # Remover ticks no topo
+    axis.ticks.y.right = element_blank(), # Remover ticks à direita
+    axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
+    axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
+    aspect.ratio = 1 # Tornar a imagem mais quadrada
+  ) +
+  scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
+  scale_x_continuous(sec.axis = dup_axis(name = NULL)) +  # Eixo secundário X sem rótulo
+  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
 
 
 
+ggplot(data, aes(x = x, y = density, color = factor(sigma))) +
+  geom_line(size = 1) +
+  labs(title = "", # Se desejar adicionar um título, descomente e personalize
+       x = "y", y = "f(y)", color = "sigma") +
+  theme_classic() +
+  theme(
+    legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
+    legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+    axis.line = element_line(color = "black"), # Linha dos eixos em preto
+    axis.line.x = element_line(color = "black"), # Linha do eixo inferior em preto
+    axis.line.y = element_line(color = "black"), # Linha do eixo esquerdo em preto
+    axis.line.x.top = element_line(color = "black"), # Linha do eixo superior em preto
+    axis.line.y.right = element_line(color = "black"), # Linha do eixo direito em preto
+    axis.ticks = element_line(color = "black"), # Ticks dos eixos em preto
+    axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
+    axis.ticks.x.top = element_blank(), # Remover ticks no topo
+    axis.ticks.y.right = element_blank(), # Remover ticks à direita
+    axis.text.x = element_text(size = 12, color = "black"), # Texto dos ticks do eixo X em preto e tamanho 14
+    axis.text.y = element_text(size = 12, color = "black"), # Texto dos ticks do eixo Y em preto e tamanho 14
+    axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
+    axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
+    aspect.ratio = 1 # Tornar a imagem mais quadrada
+  ) +
+  scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
+  scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
+  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
 
 
-
-
-
-# Criar gráficos pra mu
-mu_values <- c(0.3, 0.5, 0.7, 0.9)
-
-
-
-for (mu in mu_values) {
-  for (sigma in sigma_values) {
-    plot(x, dUGo(x, mu = mu, sigma = sigma, tau = tau), type = "l", lwd = 2,
-         main = paste("mu =", mu, ", sigma =", sigma), xlab = "x", ylab = "Density")
-  }
-}
-
-
-
-
-
-
-
-
-# Restaurar configuração gráfica
-par(mfrow = c(1, 1))
+ggsave("grafico2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
