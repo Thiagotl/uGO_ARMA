@@ -102,71 +102,124 @@ dUGo <- function(x, mu = 0.5, sigma = 1.2, tau = 0.5) {
 }
 
 # Valores dos parâmetros
-sigma_values <- c(0.5, 1.0, 1.5,2.0)
+sigma_values <- c(0.5, 1.0, 2, 3, 4)
 tau <- 0.5
 mu_fixed <- 0.5
 
 # Sequência de valores de x
-x <- seq(0.01, 5, length.out = 100)
+x <- seq(0.01, 3, length.out = 100)
 
 # Criar data frame para armazenar os valores de x, sigma e densidade
 data <- expand.grid(x = x, sigma = sigma_values)
 data$density <- mapply(dUGo, data$x, mu_fixed, data$sigma, tau)
 
+# Garantir que 'sigma' seja um fator ordenado
+data$sigma <- factor(data$sigma, levels = sigma_values)
+
 # Plotar as densidades usando ggplot2
-ggplot(data, aes(x = x, y = density, color = factor(sigma), linetype = factor(sigma))) +
+ggplot(data, aes(x = x, y = density, color = sigma, linetype = sigma)) +
   geom_line(size = 1) +
-  labs(title = paste(""), #"Densidade para diferentes valores de sigma com mu =", mu_fixed
-       x = "y", y = "f(y)", color = "sigma", linetype = "sigma") +
-  theme_classic() +
-  theme(
-    legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
-    legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
-    axis.line = element_line(), # Adicionar linha do eixo
-    axis.line.x = element_line(), # Adicionar linha do eixo inferior
-    axis.line.y = element_line(), # Adicionar linha do eixo esquerdo
-    axis.line.x.top = element_line(), # Adicionar linha do eixo no topo
-    axis.line.y.right = element_line(), # Adicionar linha do eixo à direita
-    axis.ticks = element_line(), # Adicionar todos os ticks
-    axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
-    axis.ticks.x.top = element_blank(), # Remover ticks no topo
-    axis.ticks.y.right = element_blank(), # Remover ticks à direita
-    axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
-    axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
-    aspect.ratio = 1 # Tornar a imagem mais quadrada
+  labs(
+    x = "y", y = "f(y)", color = "sigma", linetype = "sigma"
   ) +
-  scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
-  scale_x_continuous(sec.axis = dup_axis(name = NULL)) +  # Eixo secundário X sem rótulo
-  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
-
-
-
-ggplot(data, aes(x = x, y = density, color = factor(sigma))) +
-  geom_line(size = 1) +
-  labs(title = "", # Se desejar adicionar um título, descomente e personalize
-       x = "y", y = "f(y)", color = "sigma") +
   theme_classic() +
   theme(
     legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
     legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
-    axis.line = element_line(color = "black"), # Linha dos eixos em preto
-    axis.line.x = element_line(color = "black"), # Linha do eixo inferior em preto
-    axis.line.y = element_line(color = "black"), # Linha do eixo esquerdo em preto
-    axis.line.x.top = element_line(color = "black"), # Linha do eixo superior em preto
-    axis.line.y.right = element_line(color = "black"), # Linha do eixo direito em preto
-    axis.ticks = element_line(color = "black"), # Ticks dos eixos em preto
+    axis.line = element_line(color = "black"), # Linha do eixo
+    axis.ticks = element_line(color = "black"), # Adicionar todos os ticks
     axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
     axis.ticks.x.top = element_blank(), # Remover ticks no topo
     axis.ticks.y.right = element_blank(), # Remover ticks à direita
-    axis.text.x = element_text(size = 12, color = "black"), # Texto dos ticks do eixo X em preto e tamanho 14
-    axis.text.y = element_text(size = 12, color = "black"), # Texto dos ticks do eixo Y em preto e tamanho 14
+    axis.text.x = element_text(size = 12, color = "black"), # Texto dos ticks do eixo X em preto e tamanho 12
+    axis.text.y = element_text(size = 12, color = "black"),
     axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
     axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
     aspect.ratio = 1 # Tornar a imagem mais quadrada
   ) +
   scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
   scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
-  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
+  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#1E8449", "#6C3483")) + # Definir cores específicas para as densidades
+  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) # Definir tipos de linha específicos para cada sigma
+
+
+# ggplot(data, aes(x = x, y = density, color = factor(sigma))) +
+#   geom_line(size = 1) +
+#   labs(title = "", # Se desejar adicionar um título, descomente e personalize
+#        x = "y", y = "f(y)", color = "sigma") +
+#   theme_classic() +
+#   theme(
+#     legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
+#     legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+#     axis.line = element_line(color = "black"), # Linha dos eixos em preto
+#     axis.line.x = element_line(color = "black"), # Linha do eixo inferior em preto
+#     axis.line.y = element_line(color = "black"), # Linha do eixo esquerdo em preto
+#     axis.line.x.top = element_line(color = "black"), # Linha do eixo superior em preto
+#     axis.line.y.right = element_line(color = "black"), # Linha do eixo direito em preto
+#     axis.ticks = element_line(color = "black"), # Ticks dos eixos em preto
+#     axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
+#     axis.ticks.x.top = element_blank(), # Remover ticks no topo
+#     axis.ticks.y.right = element_blank(), # Remover ticks à direita
+#     axis.text.x = element_text(size = 12, color = "black"), # Texto dos ticks do eixo X em preto e tamanho 14
+#     axis.text.y = element_text(size = 12, color = "black"), # Texto dos ticks do eixo Y em preto e tamanho 14
+#     axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
+#     axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
+#     aspect.ratio = 1 # Tornar a imagem mais quadrada
+#   ) +
+#   scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
+#   scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
+#   scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
 
 
 ggsave("grafico2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
+
+ggsave("gf1.pdf", plot = last_plot(), width = 10, height = 8, units = "in", dpi = 300)
+
+# MU VALUES
+
+# Definir os valores dos parâmetros
+mu_values <- c(0.2, 0.4, 0.5, 0.7, 0.8)
+sigma_fixed <- 1.2
+tau <- 0.5
+
+# Sequência de valores de x
+x <- seq(0.01, 3, length.out = 100)
+
+# Criar data frame para armazenar os valores de x, mu e densidade
+data <- expand.grid(x = x, mu = mu_values)
+data$density <- mapply(dUGo, data$x, data$mu, sigma_fixed, tau)
+
+# Garantir que 'mu' seja um fator ordenado
+data$mu <- factor(data$mu, levels = mu_values)
+
+# Plotar as densidades usando ggplot2
+ggplot(data, aes(x = x, y = density, color = mu, linetype = mu)) +
+  geom_line(size = 1) +
+  labs(
+    x = "y", y = "f(y)", color = "mu", linetype = "mu"
+  ) +
+  theme_classic() +
+  theme(
+    legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
+    legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+    axis.line = element_line(color = "black"), # Linha do eixo
+    axis.ticks = element_line(color = "black"), # Adicionar todos os ticks
+    axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
+    axis.ticks.x.top = element_blank(), # Remover ticks no topo
+    axis.ticks.y.right = element_blank(), # Remover ticks à direita
+    axis.text.x = element_text(size = 12, color = "black"), # Texto dos ticks do eixo X em preto e tamanho 12
+    axis.text.y = element_text(size = 12, color = "black"),
+    axis.text.x.top = element_blank(), # Remover texto dos ticks no topo
+    axis.text.y.right = element_blank(), # Remover texto dos ticks à direita
+    aspect.ratio = 1 # Tornar a imagem mais quadrada
+  ) +
+  scale_y_continuous(sec.axis = dup_axis(name = NULL), limits = c(0, 4), breaks = seq(0, 4, by = 1)) + # Eixo secundário Y sem rótulo
+  scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
+  scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#1E8449", "#6C3483")) + # Definir cores específicas para os valores de mu
+  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) # Definir tipos de linha específicos para cada valor de mu
+
+
+ggsave("gf2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
+
+ggsave("gf2.pdf", plot = last_plot(), width = 10, height = 8, units = "in", dpi = 300)
+
