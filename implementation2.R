@@ -120,7 +120,7 @@ data$sigma <- factor(data$sigma, levels = sigma_values)
 ggplot(data, aes(x = x, y = density, color = sigma, linetype = sigma)) +
   geom_line(size = 1) +
   labs(
-    x = "y", y = "f(y)", color = "sigma", linetype = "sigma"
+    x = "y", y = "f(y)", color = bquote(sigma),linetype = bquote(sigma) 
   ) +
   theme_classic() +
   theme(
@@ -140,8 +140,8 @@ ggplot(data, aes(x = x, y = density, color = sigma, linetype = sigma)) +
   scale_y_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário Y sem rótulo
   scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
   scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#1E8449", "#6C3483")) + # Definir cores específicas para as densidades
-  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) # Definir tipos de linha específicos para cada sigma
-
+  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) +  #+# Definir tipos de linha específicos para cada sigma
+  theme_bw(base_size = 18)
 
 # ggplot(data, aes(x = x, y = density, color = factor(sigma))) +
 #   geom_line(size = 1) +
@@ -171,7 +171,7 @@ ggplot(data, aes(x = x, y = density, color = sigma, linetype = sigma)) +
 #   scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#2E86C1")) # Definir cores específicas para as densidades
 
 
-ggsave("grafico2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
+#ggsave("grafico2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
 
 ggsave("gf1.pdf", plot = last_plot(), width = 10, height = 8, units = "in", dpi = 300)
 
@@ -196,12 +196,12 @@ data$mu <- factor(data$mu, levels = mu_values)
 ggplot(data, aes(x = x, y = density, color = mu, linetype = mu)) +
   geom_line(size = 1) +
   labs(
-    x = "y", y = "f(y)", color = "mu", linetype = "mu"
+    x = "y", y = "f(y)", color = bquote(mu), linetype = bquote(mu)
   ) +
   theme_classic() +
   theme(
     legend.position = c(0.8, 0.8), # Posição da legenda dentro do gráfico
-    legend.background = element_rect(fill = alpha('white', 0.6)), # Fundo transparente para a legenda
+    legend.background = element_rect(fill = alpha('white', 0.1)), # Fundo transparente para a legenda
     axis.line = element_line(color = "black"), # Linha do eixo
     axis.ticks = element_line(color = "black"), # Adicionar todos os ticks
     axis.ticks.length = unit(0.3, "cm"), # Ajustar comprimento dos ticks
@@ -216,10 +216,10 @@ ggplot(data, aes(x = x, y = density, color = mu, linetype = mu)) +
   scale_y_continuous(sec.axis = dup_axis(name = NULL), limits = c(0, 4), breaks = seq(0, 4, by = 1)) + # Eixo secundário Y sem rótulo
   scale_x_continuous(sec.axis = dup_axis(name = NULL)) + # Eixo secundário X sem rótulo
   scale_color_manual(values = c("#CB4335", "#212F3D", "#D4AC0D", "#1E8449", "#6C3483")) + # Definir cores específicas para os valores de mu
-  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) # Definir tipos de linha específicos para cada valor de mu
+  scale_linetype_manual(values = c("solid", "longdash", "twodash", "dotdash", "dotted")) +# Definir tipos de linha específicos para cada valor de mu
+  theme_bw(base_size = 18)
 
-
-ggsave("gf2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
+#ggsave("gf2.png", plot = last_plot(), width = 8, height = 6, dpi = 600)
 
 ggsave("gf2.pdf", plot = last_plot(), width = 10, height = 8, units = "in", dpi = 300)
 
